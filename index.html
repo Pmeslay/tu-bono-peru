@@ -3,454 +3,340 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#101211">
+  <meta name="theme-color" content="#0b1510">
   <meta name="color-scheme" content="dark">
-  <meta name="description" content="Responde 3 preguntas rápidas y descubre tu promo de bienvenida.">
-  <title>Tu bono · Encuentra tu bienvenida</title>
+  <meta name="description" content="Gira la ruleta promocional de Tu bono y descubre el bono de bienvenida de US$500. Solo mayores de 18 años. Aplican condiciones del operador.">
+  <title>Tu bono · Gira tu bienvenida</title>
   <style>
-    /* Автономная страница: без шрифтов, библиотек и изображений из сети. */
     :root {
-      --bg: #101211;
-      --surface: #1a1d1b;
-      --line: #30352f;
-      --text: #f5f5ed;
-      --muted: #a7ada4;
+      --bg: #0b1510;
+      --text: #f5f3e8;
+      --muted: #a6b4a8;
       --gold: #edce82;
-      --gold-light: #ffe7ad;
-      --green: #b6d19e;
-      --ease: cubic-bezier(.22, .61, .36, 1);
+      --gold-light: #ffedb8;
+      --line: #d9c58428;
+      color-scheme: dark;
     }
     *, *::before, *::after { box-sizing: border-box; }
     [hidden] { display: none !important; }
     html { min-height: 100%; background: var(--bg); }
     body {
-      margin: 0;
-      min-width: 0;
-      min-height: 100vh;
-      min-height: 100svh;
-      display: flex;
-      justify-content: center;
-      color: var(--text);
-      background:
-        radial-gradient(ellipse at 50% 22%, #d6b9680d 0%, transparent 60%),
-        var(--bg);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -webkit-text-size-adjust: 100%;
+      margin: 0; min-width: 0; min-height: 100vh; min-height: 100svh;
+      display: flex; justify-content: center; color: var(--text);
+      background: radial-gradient(ellipse at 50% 36%, #28472e55, transparent 65%), var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%;
     }
     button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-    button { font: inherit; }
-    button, .cta { cursor: pointer; }
-    button:focus-visible, a:focus-visible {
-      outline: 3px solid var(--gold-light);
-      outline-offset: 4px;
-    }
+    button { font: inherit; cursor: pointer; }
     button:disabled { cursor: default; }
-    .icon { width: 24px; height: 24px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-    .app {
-      width: 100%;
-      max-width: 460px;
-      min-height: 100vh;
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      padding: max(22px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
-    }
-    .header { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 36px; }
-    .brand { display: flex; align-items: center; gap: 9px; font-size: 19px; font-weight: 750; letter-spacing: -.6px; }
-    .brand-mark { color: var(--gold); width: 27px; height: 27px; }
-    .brand span { color: var(--gold); }
-    .locale { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 11px; letter-spacing: .2px; white-space: nowrap; }
-    .flag { width: 15px; height: 10px; border-radius: 2px; background: linear-gradient(90deg, #d44b47 33.33%, #f3eee5 33.33%, #f3eee5 66.66%, #d44b47 66.66%); }
-    .progress-area { margin-top: 28px; }
-    .progress-meta { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; font-size: 12px; }
-    #progress-label { font-weight: 650; color: var(--gold); }
-    .progress-hint { color: var(--muted); }
-    .progress-track { height: 4px; background: #2d322b; border-radius: 20px; overflow: hidden; }
-    .progress-fill { height: 100%; width: 33.3333%; background: var(--gold); border-radius: inherit; transition: width 300ms var(--ease); }
-    .stage { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 28px 0; }
-    .stage[data-screen="welcome"] { flex: 0 0 auto; justify-content: flex-start; padding-top: clamp(20px, 3.5svh, 30px); }
-    .screen { width: 100%; min-width: 0; opacity: 1; transform: translateY(0); transition: opacity 180ms ease, transform 180ms var(--ease); }
-    .stage.is-switching .screen { opacity: 0; transform: translateY(9px); pointer-events: none; }
-    .centered { text-align: center; }
-    .eyebrow { display: block; margin: 0 0 15px; color: var(--gold); font-size: 10px; font-weight: 750; letter-spacing: 2px; line-height: 1.5; text-transform: uppercase; }
-    h1, h2 { margin: 0; font-size: clamp(28px, 8.4vw, 35px); line-height: 1.13; letter-spacing: -1.1px; font-weight: 750; text-wrap: balance; overflow-wrap: break-word; }
-    h1:focus, h2:focus { outline: none; }
-    h1 .accent { color: var(--gold-light); }
-    .description { margin: 18px 0 0; color: var(--muted); font-size: 15px; line-height: 1.65; text-wrap: pretty; }
-    .hero-art { width: 160px; height: 160px; margin: 0 auto 18px; display: flex; align-items: center; justify-content: center; position: relative; isolation: isolate; }
-    .hero-art::before { content: ""; position: absolute; inset: -14px; z-index: -1; border-radius: 50%; background: radial-gradient(circle, #edce8230, #edce8209 48%, transparent 70%); opacity: .55; }
-    .halo { position: absolute; inset: 2px; border: 1px solid #d7b96c21; border-radius: 50%; }
-    .halo::before { content: ""; position: absolute; inset: 12px; border: 1px dashed #d7b96c25; border-radius: inherit; }
-    .coin {
-      display: flex; align-items: center; justify-content: center;
-      width: 120px; height: 120px; border-radius: 50%; color: var(--gold-light);
-      border: 1px solid #b99c5966;
-      background: radial-gradient(circle at 30% 20%, #e5c67b30, #211e15 75%);
-      box-shadow: inset 0 0 0 5px #1c1d17, inset 0 0 0 6px #bc9b4c40, 0 12px 35px #0005;
-      transform: rotate(-9deg);
-    }
-    .coin .icon { width: 53px; height: 53px; stroke-width: 1.35; }
-    .spark { position: absolute; color: var(--gold); width: 18px; height: 18px; }
-    .spark-one { top: 9px; right: 10px; }
-    .spark-two { bottom: 20px; left: 3px; width: 12px; height: 12px; opacity: .6; }
-    /* Короткая анимация только transform/opacity: затем подарок остается неподвижным. */
-    #welcome:not([hidden]) .hero-art { animation: gift-appear 500ms var(--ease) both; }
-    #welcome:not([hidden]) .coin { animation: gift-float 2.1s 400ms ease-in-out 2; }
-    #welcome:not([hidden]) .hero-art::before { animation: gift-glow 2.1s 400ms ease-in-out 2; }
-    #welcome:not([hidden]) .spark { animation: gift-sparkle 2.1s 400ms ease-in-out 2; }
-    #welcome:not([hidden]) .spark-two { animation-delay: 650ms; }
-    @keyframes gift-appear { from { opacity: 0; transform: translateY(10px) scale(.94); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    @keyframes gift-float { 0%, 100% { transform: translateY(0) rotate(-9deg); } 50% { transform: translateY(-6px) rotate(-4deg); } }
-    @keyframes gift-glow { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: .95; transform: scale(1.08); } }
-    @keyframes gift-sparkle { 0%, 100% { transform: scale(1); } 50% { opacity: .4; transform: scale(.7) rotate(15deg); } }
-    .hero-description { max-width: 315px; margin: 14px auto 0; }
-    #welcome > .eyebrow { margin-bottom: 12px; }
-    #welcome .under-cta { margin-top: 10px; }
-    .mini-facts { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px 18px; margin: 18px 0 20px; color: #c8cec3; font-size: 11px; }
-    .mini-facts span { display: flex; align-items: center; gap: 6px; }
-    .mini-facts .icon { width: 15px; height: 15px; color: var(--green); }
-    .cta {
-      width: 100%; min-height: 58px; padding: 16px 20px;
-      display: flex; align-items: center; justify-content: center; gap: 12px;
-      border: 1px solid #f9dda0; border-radius: 14px;
-      color: #202217; background: linear-gradient(110deg, #f6dc9b, #e8c675);
-      box-shadow: 0 7px 24px #d5b35f12;
-      font-size: 16px; font-weight: 750; line-height: 1.35; text-align: center; text-decoration: none;
-      transition: background 150ms, transform 150ms, box-shadow 150ms;
-    }
-    .cta .icon { width: 19px; height: 19px; }
-    .cta:active { transform: scale(.98); }
-    .under-cta { margin: 13px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
-    .question-icon { width: 47px; height: 47px; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; color: var(--gold); border: 1px solid #c4ad6533; border-radius: 14px; background: #d4bb6510; }
-    .question .eyebrow { margin-bottom: 10px; }
-    .question h2 { max-width: 360px; }
-    .question .description { margin-top: 12px; font-size: 14px; }
-    .options { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
-    .option {
-      display: flex; align-items: center; gap: 13px;
-      width: 100%; min-height: 64px; padding: 15px 16px;
-      border: 1px solid var(--line); border-radius: 14px;
-      color: var(--text); background: var(--surface); text-align: left;
-      font-size: 15px; font-weight: 600; line-height: 1.45;
-      transition: border-color 140ms, background 140ms, transform 140ms;
-    }
-    .option .option-icon { width: 23px; height: 23px; color: #c0c6b9; }
-    .option-text { flex: 1; min-width: 0; overflow-wrap: break-word; }
-    .option .chevron { width: 16px; height: 16px; color: #737c6d; margin-left: auto; }
-    .option:active { transform: scale(.985); }
-    .option[aria-pressed="true"] { border-color: var(--gold); background: #edce8212; }
-    .option[aria-pressed="true"] .icon { color: var(--gold); }
-    .payment-icon { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 750; flex: 0 0 auto; }
-    .yape { background: #692a7b; color: #fff; }
-    .plin { background: #174c4b; color: #a6eee2; }
-    .back, .restart { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 50px; border: 0; background: transparent; color: var(--muted); font-size: 12px; padding: 12px 16px; }
-    .back { margin: 12px 0 -8px -16px; }
-    .back .icon { width: 16px; height: 16px; }
-    .result { --result-accent: #edce82; --result-rgb: 237, 206, 130; }
-    .result[data-style="table"] { --result-accent: #99dfc5; --result-rgb: 153, 223, 197; }
-    .result[data-style="sports"] { --result-accent: #c0e596; --result-rgb: 192, 229, 150; }
-    .result[data-style="explore"] { --result-accent: #e4d6b1; --result-rgb: 228, 214, 177; }
-    .result-emblem { display: flex; align-items: center; justify-content: center; position: relative; width: 78px; height: 78px; border: 1px solid rgba(var(--result-rgb), .4); border-radius: 24px; background: radial-gradient(circle at 25% 15%, rgba(var(--result-rgb), .18), rgba(var(--result-rgb), .04)); color: var(--result-accent); margin: 0 auto 18px; }
-    .result-emblem .icon { width: 42px; height: 42px; stroke-width: 1.35; }
-    .result-complete { position: absolute; right: -6px; bottom: -6px; display: flex; align-items: center; justify-content: center; width: 25px; height: 25px; border: 3px solid var(--bg); border-radius: 50%; background: var(--result-accent); color: var(--bg); }
-    .result-complete .icon { width: 14px; height: 14px; stroke-width: 2.4; }
-    .result h2 { font-size: clamp(26px, 7.5vw, 31px); }
-    .result h2 span { color: var(--gold-light); }
-    .bonus-card { margin: 23px 0; border: 1px solid rgba(var(--result-rgb), .35); border-radius: 18px; padding: 20px 18px 18px; background: radial-gradient(ellipse at 100% 0, rgba(var(--result-rgb), .13), transparent 70%), #191d18; text-align: left; }
-    .bonus-card-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .bonus-card .eyebrow { margin-bottom: 6px; color: var(--result-accent); font-size: 9px; letter-spacing: 1.5px; }
-    .bonus-name { margin: 0; font-size: 23px; font-weight: 650; letter-spacing: -.65px; }
-    .bonus-card-top > .icon { width: 32px; height: 32px; color: var(--result-accent); stroke-width: 1.25; }
-    .profile-note { margin: 12px 0 0; color: #c7cebe; font-size: 12px; line-height: 1.6; }
-    .preferences { border-top: 1px solid rgba(var(--result-rgb), .16); margin-top: 15px; padding-top: 13px; }
-    .preferences-label { color: var(--muted); font-size: 10px; margin: 0 0 10px; }
-    .preference-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-    .preference-tag { max-width: 100%; padding: 6px 9px; border-radius: 6px; background: rgba(var(--result-rgb), .08); color: var(--result-accent); font-size: 11px; line-height: 1.5; overflow-wrap: break-word; }
-    .restart { margin: 7px auto -10px; }
-    .footer { margin-top: auto; padding-top: 16px; text-align: center; border-top: 1px solid #292e27; }
-    .footer p { margin: 0; color: #929a8c; font-size: 10px; line-height: 1.8; }
-    .footer p + p { margin-top: 3px; color: #929a8c; font-size: 9px; }
-    .age-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 18px; border: 1px solid #535d49; border-radius: 4px; margin-right: 6px; font-size: 9px; }
-    .setup-message { color: var(--gold-light); font-size: 12px; line-height: 1.5; margin: 12px 0 0; }
-    .noscript { margin: 20px; padding: 18px; border: 1px solid var(--gold); border-radius: 14px; color: var(--gold-light); line-height: 1.6; }
-    @media (hover: hover) {
-      .option:hover { border-color: #8b825f; background: #22261f; }
-      .cta:hover { background: var(--gold-light); box-shadow: 0 8px 28px #d5b35f22; }
-      .back:hover, .restart:hover { color: var(--text); }
-    }
-    @media (max-width: 350px) {
-      .app { padding-left: max(18px, env(safe-area-inset-left)); padding-right: max(18px, env(safe-area-inset-right)); }
-      .option { padding: 13px; gap: 10px; font-size: 14px; }
-      .cta { font-size: 15px; padding-left: 12px; padding-right: 12px; }
-    }
-    @media (max-height: 740px) {
-      .stage { padding-top: 22px; padding-bottom: 22px; }
-      .hero-art { width: 130px; height: 130px; margin-bottom: 14px; }
-      .coin { width: 98px; height: 98px; }
-      .coin .icon { width: 45px; height: 45px; }
-      .mini-facts { margin-top: 16px; margin-bottom: 18px; }
-      .question-icon { margin-bottom: 18px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-    }
+    button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid var(--gold-light); outline-offset: 4px; }
+    .app { width: 100%; max-width: 460px; min-width: 0; min-height: 100svh; display: flex; flex-direction: column; padding: max(18px, env(safe-area-inset-top)) max(22px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(22px, env(safe-area-inset-left)); }
+    .header { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 32px; }
+    .brand { display: flex; align-items: center; gap: 8px; font-size: 19px; font-weight: 750; letter-spacing: -.8px; }
+    .brand em { color: var(--gold); font-style: normal; }
+    .icon { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
+    .brand .icon { color: var(--gold); width: 25px; height: 28px; }
+    .locale { display: flex; align-items: center; gap: 7px; font-size: 10px; letter-spacing: 1px; color: var(--muted); }
+    .flag { width: 13px; height: 9px; border-radius: 1px; background: linear-gradient(90deg, #dc6660 33.33%, #f3eee5 33.33%, #f3eee5 66.66%, #dc6660 66.66%); }
+    main { flex: 1; text-align: center; padding-top: 28px; }
+    .eyebrow { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 0 12px; font-size: 9px; font-weight: 750; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+    .eyebrow::before, .eyebrow::after { content: ''; width: 20px; height: 1px; background: var(--gold); opacity: .45; }
+    h1 { margin: 0; font-size: clamp(31px, 8.9vw, 39px); line-height: 1.07; letter-spacing: -1.35px; font-weight: 780; text-wrap: balance; }
+    h1 span { color: var(--gold-light); }
+    .intro { margin: 12px auto 0; max-width: 310px; font-size: 14px; line-height: 1.55; color: var(--muted); text-wrap: pretty; }
+    .wheel-scene { position: relative; width: 100%; max-width: 354px; margin: 19px auto 0; padding: 10px 4px 14px; isolation: isolate; }
+    .wheel-scene::before { content: ''; position: absolute; z-index: -1; inset: 7% -3% 0; border-radius: 50%; background: radial-gradient(circle, #b9c2711b, transparent 69%); }
+    .wheel-frame { position: relative; width: 100%; aspect-ratio: 1; border-radius: 50%; background: #8b743e; box-shadow: 0 18px 35px #0007, 0 0 0 5px #213326, 0 0 0 6px #d6bd6d3b; }
+    .wheel { position: relative; display: block; width: 100%; height: 100%; border-radius: 50%; transform: rotate(0deg); transform-origin: 50% 50%; will-change: transform; }
+    .wheel text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; }
+    .wheel-ring { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .pointer { position: absolute; z-index: 3; width: 32px; height: 44px; top: -10px; left: calc(50% - 16px); filter: drop-shadow(0 4px 3px #0009); }
+    .wheel-hub { position: absolute; z-index: 2; top: 50%; left: 50%; width: 25%; aspect-ratio: 1; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 50%; color: #3c3320; border: 5px solid #b49b58; background: radial-gradient(circle at 33% 20%, #fff1c0, #d7b867 75%); box-shadow: 0 5px 17px #0009, inset 0 0 0 1px #fff5bd; }
+    .wheel-hub .icon { width: 28px; height: 31px; stroke-width: 1.45; }
+    .wheel-hub span { font-size: clamp(7px, 2.1vw, 9px); font-weight: 800; letter-spacing: 1.4px; margin-top: 4px; }
+    .wheel-scene.is-won .wheel-frame { box-shadow: 0 18px 35px #0007, 0 0 0 5px #213326, 0 0 0 6px #d6bd6d80, 0 0 45px #dcc67522; }
+    .twinkle { position: absolute; z-index: 3; color: var(--gold); font-size: 18px; line-height: 1; pointer-events: none; }
+    .twinkle.one { top: 5%; left: 0; }
+    .twinkle.two { bottom: 9%; right: 1%; font-size: 23px; }
+    .wheel-status { margin: 7px 0 13px; min-height: 18px; display: flex; align-items: center; justify-content: center; gap: 7px; color: var(--gold); font-size: 11px; }
+    .status-dot { width: 5px; height: 5px; border-radius: 50%; background: #b8cc9b; }
+    .button { width: 100%; min-height: 58px; border: 1px solid #ffedb88a; border-radius: 14px; background: linear-gradient(110deg, #f9e4a6, #dfba62); box-shadow: 0 5px 0 #796137, 0 11px 25px #b49b5815; color: #252819; font-size: 16px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 11px; text-decoration: none; transition: transform .15s ease, filter .15s ease; }
+    .button:hover { filter: brightness(1.06); }
+    .button:active { transform: translateY(2px); }
+    .button:disabled { filter: saturate(.6); }
+    .button .icon { width: 20px; height: 20px; }
+    .spin-loader { display: none; width: 17px; height: 17px; border: 2px solid #272f2135; border-top-color: #272f21; border-radius: 50%; }
+    .is-spinning .spin-loader { display: block; animation: loading .7s linear infinite; }
+    .is-spinning .spin-icon { display: none; }
+    .hint { margin: 14px 0 0; font-size: 11px; color: var(--muted); line-height: 1.6; }
+    .mechanic { margin: 15px auto 0; max-width: 320px; font-size: 11px; line-height: 1.55; color: #99a89b; }
+    .result { position: relative; padding: 16px 20px 19px; margin-top: 2px; border: 1px solid #e8cf7f4a; border-radius: 20px; background: radial-gradient(ellipse at 50% 0, #b9a45b24, transparent 75%), #17271e; animation: result-in .45s ease both; }
+    .result-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 650; color: #c9dbb5; }
+    .result-tag .icon { width: 15px; height: 15px; }
+    .result h2 { font-size: 19px; margin: 10px 0 2px; font-weight: 650; letter-spacing: -.4px; }
+    .result h2:focus { outline: none; }
+    .amount { display: flex; align-items: baseline; justify-content: center; gap: 5px; margin: 0; font-size: clamp(64px, 19vw, 80px); font-weight: 820; line-height: 1.1; letter-spacing: -4px; color: var(--gold-light); }
+    .amount small { font-size: 21px; font-weight: 600; letter-spacing: -1px; }
+    .result-copy { margin: 7px 0 17px; font-size: 12px; line-height: 1.6; color: #b5c1b5; }
+    .result .button { font-size: 15px; min-height: 55px; }
+    .result-terms { margin: 13px 0 0; font-size: 10px; line-height: 1.6; color: #a9b8a9; }
+    .celebration { position: absolute; inset: 0; overflow: hidden; pointer-events: none; border-radius: 20px; }
+    .confetti { position: absolute; top: -12px; width: 5px; height: 10px; border-radius: 1px; background: var(--gold); animation: confetti-fall 1.5s ease-out both; }
+    .conditions { margin-top: 20px; padding-top: 4px; border-top: 1px solid var(--line); text-align: left; }
+    .conditions summary { min-height: 50px; display: flex; align-items: center; justify-content: space-between; list-style: none; cursor: pointer; gap: 10px; font-size: 11px; color: #b8c4b8; }
+    .conditions summary::-webkit-details-marker { display: none; }
+    .conditions summary::after { content: '+'; font-size: 18px; color: var(--gold); }
+    .conditions[open] summary::after { content: '−'; }
+    .conditions p { color: var(--muted); font-size: 11px; line-height: 1.7; margin: 0 0 12px; }
+    .footer { padding-top: 13px; margin-top: 2px; text-align: center; color: #8e9f90; font-size: 10px; line-height: 1.7; }
+    .footer p { margin: 0 0 4px; }
+    .age-badge { display: inline-flex; justify-content: center; min-width: 23px; padding: 0 3px; margin-right: 5px; border: 1px solid #91a39144; border-radius: 4px; font-size: 9px; }
+    .age-dialog { width: calc(100% - 40px); max-width: 370px; padding: 26px; border-radius: 22px; border: 1px solid #b8a76e77; color: var(--text); background: #14221a; text-align: center; box-shadow: 0 25px 100px #0009; }
+    .age-dialog::backdrop { background: #020804d9; backdrop-filter: blur(6px); }
+    .age-symbol { display: inline-flex; width: 52px; height: 52px; border: 1px solid #edce8250; border-radius: 50%; align-items: center; justify-content: center; color: var(--gold); font-size: 18px; font-weight: 700; }
+    .age-dialog h2 { font-size: 23px; line-height: 1.2; letter-spacing: -.6px; margin: 18px 0 10px; }
+    .age-dialog p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .age-dialog .button { font-size: 14px; margin-top: 20px; min-height: 54px; }
+    .secondary { display: block; width: 100%; min-height: 50px; background: transparent; color: #bfccbf; border: 1px solid #95ab9533; border-radius: 12px; font-size: 13px; margin-top: 13px; }
+    .age-error { color: #f0c4a9 !important; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    noscript p { font-size: 13px; line-height: 1.6; color: var(--gold); }
+    @keyframes loading { to { transform: rotate(360deg); } }
+    @keyframes result-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes confetti-fall { 0% { opacity: 0; transform: translateY(-5px) rotate(0); } 12% { opacity: 1; } 100% { opacity: 0; transform: translateY(260px) rotate(380deg); } }
+    @media (max-width: 359px) { .app { padding-left: 18px; padding-right: 18px; } main { padding-top: 23px; } .wheel-scene { margin-top: 16px; } .result { padding: 15px; } h1 { font-size: 31px; } }
+    @media (min-height: 850px) { main { padding-top: 35px; } .wheel-scene { margin-top: 25px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
   </style>
 </head>
 <body>
-  <!-- SVG-спрайт встроен в файл и не требует загрузки ресурсов. -->
-  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;overflow:hidden">
-    <defs>
-      <symbol id="i-diamond" viewBox="0 0 24 24"><path d="m12 2 9 10-9 10L3 12 9 2h6l6 10H3m6-10 3 20 3-20"/></symbol>
-      <symbol id="i-gift" viewBox="0 0 24 24"><path d="M4 11v10h16V11M3 7h18v4H3zM12 7v14"/><path d="M12 7H7.5a2.5 2.5 0 1 1 2.4-3.2L12 7Zm0 0h4.5a2.5 2.5 0 1 0-2.4-3.2L12 7Z"/></symbol>
-      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
-      <symbol id="i-back" viewBox="0 0 24 24"><path d="M20 12H4m6-6-6 6 6 6"/></symbol>
-      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
-      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
-      <symbol id="i-cross" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></symbol>
-      <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z"/><path d="m8.5 11.5 2.5 2.5 4.5-5"/></symbol>
-      <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2Z"/></symbol>
-      <symbol id="i-slots" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M9 5v14m6-14v14M5.5 9h1l-1 5m6-5h1l-1 5m6-5h1l-1 5"/></symbol>
-      <symbol id="i-wheel" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v6m0 6v6M3 12h6m6 0h6M5.6 5.6l4.3 4.3m4.2 4.2 4.3 4.3m-12.8 0 4.3-4.3m4.2-4.2 4.3-4.3"/></symbol>
-      <symbol id="i-ball" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m12 7 5 4-2 6H9l-2-6 5-4Zm0 0V3m5 8 3.5-1.5M15 17l2 3m-8-3-2 3m0-9L3.5 9.5"/></symbol>
-      <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M20 8V5H6a3 3 0 0 0 0 6h15v9H6a3 3 0 0 1-3-3V8"/><path d="M21 13h-6v4h6m-3-2h.01"/></symbol>
-      <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2 9h20M6 15h4"/></symbol>
-      <symbol id="i-list" viewBox="0 0 24 24"><path d="m3 6 1 1 2-2m3 1h12M3 12h3m3 0h12M3 18h3m3 0h12"/></symbol>
-    </defs>
-  </svg>
-
-  <noscript><style>.app { display:none; }</style><p class="noscript">Activa JavaScript en tu navegador para responder las preguntas.</p></noscript>
-
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute;overflow:hidden"><defs>
+    <symbol id="i-gem" viewBox="0 0 24 28"><path d="m12 2 8 11-8 13L4 13zM4 13h16M12 2l-3 11 3 13 3-13z"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-spin" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2 6M20 4v7h-7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  </defs></svg>
   <div class="app">
     <header class="header">
-      <div class="brand" aria-label="Tu bono"><svg class="icon brand-mark" aria-hidden="true"><use href="#i-diamond"/></svg><div>tu<span>bono</span></div></div>
-      <div class="locale"><span class="flag" aria-hidden="true"></span> PERÚ <span aria-hidden="true">·</span> 18+</div>
+      <div class="brand" aria-label="Tu bono"><svg class="icon" aria-hidden="true"><use href="#i-gem"/></svg><span>tu<em>bono</em></span></div>
+      <div class="locale"><span class="flag" aria-hidden="true"></span>PERÚ <span aria-hidden="true">·</span> 18+</div>
     </header>
-
-    <div class="progress-area" id="progress-area" hidden>
-      <div class="progress-meta"><span id="progress-label">Paso 1 de 3</span><span class="progress-hint">Tu bienvenida, más cerca</span></div>
-      <div class="progress-track" id="progress" role="progressbar" aria-label="Progreso del cuestionario" aria-valuemin="0" aria-valuemax="3" aria-valuenow="1" aria-valuetext="Paso 1 de 3"><div class="progress-fill" id="progress-fill"></div></div>
-    </div>
-
-    <main class="stage" id="stage" data-screen="welcome">
-      <!-- Экран 1: приветствие. -->
-      <section class="screen centered" id="welcome" aria-labelledby="welcome-title">
-        <div class="hero-art" aria-hidden="true"><div class="halo"></div><div class="coin"><svg class="icon"><use href="#i-gift"/></svg></div><svg class="icon spark spark-one"><use href="#i-spark"/></svg><svg class="icon spark spark-two"><use href="#i-spark"/></svg></div>
-        <span class="eyebrow">Una nueva forma de empezar</span>
-        <h1 id="welcome-title" tabindex="-1">¿Quieres reclamar tu <span class="accent">bono de bienvenida?</span></h1>
-        <p class="description hero-description">Responde 3 preguntas rápidas y descubre qué promo te corresponde.</p>
-        <div class="mini-facts"><span><svg class="icon" aria-hidden="true"><use href="#i-list"/></svg>3 preguntas</span><span><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Sin formularios</span></div>
-        <button type="button" class="cta" data-action="start">Empezar<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-        <p class="under-cta">Tu próxima bienvenida empieza aquí.</p>
-      </section>
-
-      <!-- Экран 2: вопрос 1. Ответ No не позволяет перейти дальше. -->
-      <section class="screen question" id="age" aria-labelledby="age-title" hidden>
-        <div class="question-icon" aria-hidden="true"><svg class="icon"><use href="#i-shield"/></svg></div>
-        <span class="eyebrow">01 / Antes de empezar</span>
-        <h2 id="age-title" tabindex="-1">¿Eres mayor de 18 años?</h2>
-        <p class="description">Primero, confirma tu edad.</p>
-        <div class="options" role="group" aria-labelledby="age-title">
-          <button type="button" class="option" data-answer="adult" data-value="yes" aria-pressed="false"><svg class="icon option-icon" aria-hidden="true"><use href="#i-check"/></svg><span class="option-text">Sí, soy mayor de edad</span><svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"/></svg></button>
-          <button type="button" class="option" data-answer="adult" data-value="no" aria-pressed="false"><svg class="icon option-icon" aria-hidden="true"><use href="#i-cross"/></svg><span class="option-text">No</span><svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"/></svg></button>
+    <main>
+      <p class="eyebrow">Tu bienvenida da un giro</p>
+      <h1>Un giro.<br><span>Tu próximo bono.</span></h1>
+      <p class="intro" id="intro">Gira la ruleta y descubre tu<br>bono de bienvenida.</p>
+      <div class="wheel-scene" id="wheel-scene">
+        <span class="twinkle one" aria-hidden="true">✧</span><span class="twinkle two" aria-hidden="true">✧</span>
+        <div class="wheel-frame">
+          <svg class="wheel" id="wheel" viewBox="0 0 400 400" role="img" aria-label="Ruleta promocional con valores de 50 a 500 dólares; resultado fijo de 500 dólares">
+            <defs><linearGradient id="prize-gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0b9"/><stop offset="1" stop-color="#cc9d48"/></linearGradient></defs>
+            <circle cx="200" cy="200" r="198" fill="#64532e"/>
+            <g class="segment">
+    <path d="M200 200 L130.352 31.854 A182 182 0 0 1 269.648 31.854 Z" fill="#15281f" stroke="#d4b86c" stroke-opacity=".32" stroke-width="1"/>
+    <g transform="rotate(0 200 200)" fill="#f7e6b5" text-anchor="middle">
+      <text x="200" y="66" font-size="10" font-weight="600" letter-spacing="2">US$</text>
+      <text x="200" y="98" font-size="29" font-weight="800" letter-spacing="-1">50</text>
+      <path d="M200 117 l3.5 5 -3.5 5 -3.5 -5z" opacity=".5"/>
+    </g>
+  </g>
+<g class="segment">
+    <path d="M200 200 L269.648 31.854 A182 182 0 0 1 368.146 130.352 Z" fill="#233d31" stroke="#d4b86c" stroke-opacity=".32" stroke-width="1"/>
+    <g transform="rotate(45 200 200)" fill="#f7e6b5" text-anchor="middle">
+      <text x="200" y="66" font-size="10" font-weight="600" letter-spacing="2">US$</text>
+      <text x="200" y="98" font-size="29" font-weight="800" letter-spacing="-1">100</text>
+      <path d="M200 117 l3.5 5 -3.5 5 -3.5 -5z" opacity=".5"/>
+    </g>
+  </g>
+<g class="segment">
+    <path d="M200 200 L368.146 130.352 A182 182 0 0 1 368.146 269.648 Z" fill="#15281f" stroke="#d4b86c" stroke-opacity=".32" stroke-width="1"/>
+    <g transform="rotate(90 200 200)" fill="#f7e6b5" text-anchor="middle">
+      <text x="200" y="66" font-size="10" font-weight="600" letter-spacing="2">US$</text>
+      <text x="200" y="98" font-size="29" font-weight="800" letter-spacing="-1">150</text>
+      <path d="M200 117 l3.5 5 -3.5 5 -3.5 -5z" opacity=".5"/>
+    </g>
+  </g>
+<g class="segment">
+    <path d="M200 200 L368.146 269.648 A182 182 0 0 1 269.648 368.146 Z" fill="#233d31" stroke="#d4b86c" stroke-opacity=".32" stroke-width="1"/>
+    <g transform="rotate(135 200 200)" fill="#f7e6b5" text-anchor="middle">
+      <text x="200" y="66" font-size="10" font-weight="600" letter-spacing="2">US$</text>
+      <text x="200" y="98" font-size="29" font-weight="800" letter-spacing="-1">200</text>
+      <path d="M200 117 l3.5 5 -3.5 5 -3.5 -5z" opacity=".5"/>
+    </g>
+  </g>
+<g class="segment">
+    <path d="M200 200 L269.648 368.146 A182 182 0 0 1 130.352 368.146 Z" fill="#15281f" stroke="#d4b86c" stroke-opacity=".32" stroke-width="1"/>
+    <g transform="rotate(180 200 200)" fill="#f7e6b5" text-anchor="middle">
+      <text x="200" y="66" font-size="10" font-weight="600" letter-spacing="2">US$</text>
+      <text x="200" y="98" font-size="29" font-weight="800" letter-spacing="-1">250</text>
+      <path d="M200 117 l3.5 5 -3.5 5 -3.5 -5z" opacity=".5"/>
+    </g>
+  </g>
+<g class="segment winning-segment">
+    <path d="M200 200 L130.352 368.146 A182 182 0 0 1 31.854 269.648 Z" fill="url(#prize-gold)" stroke="#d4b86c" stroke-opacity=".32" stroke-width="1"/>
+    <g transform="rotate(225 200 200)" fill="#272316" text-anchor="middle">
+      <text x="200" y="66" font-size="10" font-weight="600" letter-spacing="2">US$</text>
+      <text x="200" y="98" font-size="29" font-weight="800" letter-spacing="-1">500</text>
+      <path d="M200 117 l3.5 5 -3.5 5 -3.5 -5z" opacity=".5"/>
+    </g>
+  </g>
+<g class="segment">
+    <path d="M200 200 L31.854 269.648 A182 182 0 0 1 31.854 130.352 Z" fill="#15281f" stroke="#d4b86c" stroke-opacity=".32" stroke-width="1"/>
+    <g transform="rotate(270 200 200)" fill="#f7e6b5" text-anchor="middle">
+      <text x="200" y="66" font-size="10" font-weight="600" letter-spacing="2">US$</text>
+      <text x="200" y="98" font-size="29" font-weight="800" letter-spacing="-1">75</text>
+      <path d="M200 117 l3.5 5 -3.5 5 -3.5 -5z" opacity=".5"/>
+    </g>
+  </g>
+<g class="segment">
+    <path d="M200 200 L31.854 130.352 A182 182 0 0 1 130.352 31.854 Z" fill="#233d31" stroke="#d4b86c" stroke-opacity=".32" stroke-width="1"/>
+    <g transform="rotate(315 200 200)" fill="#f7e6b5" text-anchor="middle">
+      <text x="200" y="66" font-size="10" font-weight="600" letter-spacing="2">US$</text>
+      <text x="200" y="98" font-size="29" font-weight="800" letter-spacing="-1">300</text>
+      <path d="M200 117 l3.5 5 -3.5 5 -3.5 -5z" opacity=".5"/>
+    </g>
+  </g>
+          </svg>
+          <svg class="wheel-ring" viewBox="0 0 400 400" aria-hidden="true"><circle cx="200" cy="200" r="190" fill="none" stroke="#b69b5a" stroke-width="12"/><circle cx="200" cy="200" r="190" fill="none" stroke="#403c23" stroke-width="9"/><circle cx="200" cy="200" r="182.5" fill="none" stroke="#f2db91" stroke-width="1.5"/><circle cx="200.000" cy="5.000" r="2" fill="#fff2bd"/><circle cx="230.505" cy="7.401" r="2" fill="#c3a060"/><circle cx="260.258" cy="14.544" r="2" fill="#fff2bd"/><circle cx="288.528" cy="26.254" r="2" fill="#c3a060"/><circle cx="314.618" cy="42.242" r="2" fill="#fff2bd"/><circle cx="337.886" cy="62.114" r="2" fill="#c3a060"/><circle cx="357.758" cy="85.382" r="2" fill="#fff2bd"/><circle cx="373.746" cy="111.472" r="2" fill="#c3a060"/><circle cx="385.456" cy="139.742" r="2" fill="#fff2bd"/><circle cx="392.599" cy="169.495" r="2" fill="#c3a060"/><circle cx="395.000" cy="200.000" r="2" fill="#fff2bd"/><circle cx="392.599" cy="230.505" r="2" fill="#c3a060"/><circle cx="385.456" cy="260.258" r="2" fill="#fff2bd"/><circle cx="373.746" cy="288.528" r="2" fill="#c3a060"/><circle cx="357.758" cy="314.618" r="2" fill="#fff2bd"/><circle cx="337.886" cy="337.886" r="2" fill="#c3a060"/><circle cx="314.618" cy="357.758" r="2" fill="#fff2bd"/><circle cx="288.528" cy="373.746" r="2" fill="#c3a060"/><circle cx="260.258" cy="385.456" r="2" fill="#fff2bd"/><circle cx="230.505" cy="392.599" r="2" fill="#c3a060"/><circle cx="200.000" cy="395.000" r="2" fill="#fff2bd"/><circle cx="169.495" cy="392.599" r="2" fill="#c3a060"/><circle cx="139.742" cy="385.456" r="2" fill="#fff2bd"/><circle cx="111.472" cy="373.746" r="2" fill="#c3a060"/><circle cx="85.382" cy="357.758" r="2" fill="#fff2bd"/><circle cx="62.114" cy="337.886" r="2" fill="#c3a060"/><circle cx="42.242" cy="314.618" r="2" fill="#fff2bd"/><circle cx="26.254" cy="288.528" r="2" fill="#c3a060"/><circle cx="14.544" cy="260.258" r="2" fill="#fff2bd"/><circle cx="7.401" cy="230.505" r="2" fill="#c3a060"/><circle cx="5.000" cy="200.000" r="2" fill="#fff2bd"/><circle cx="7.401" cy="169.495" r="2" fill="#c3a060"/><circle cx="14.544" cy="139.742" r="2" fill="#fff2bd"/><circle cx="26.254" cy="111.472" r="2" fill="#c3a060"/><circle cx="42.242" cy="85.382" r="2" fill="#fff2bd"/><circle cx="62.114" cy="62.114" r="2" fill="#c3a060"/><circle cx="85.382" cy="42.242" r="2" fill="#fff2bd"/><circle cx="111.472" cy="26.254" r="2" fill="#c3a060"/><circle cx="139.742" cy="14.544" r="2" fill="#fff2bd"/><circle cx="169.495" cy="7.401" r="2" fill="#c3a060"/><circle cx="200" cy="200" r="199" fill="none" stroke="#d9bc74" stroke-width="2"/></svg>
+          <svg class="pointer" viewBox="0 0 32 44" aria-hidden="true"><defs><linearGradient id="pointer-gold" x1="0" x2="1"><stop stop-color="#d0aa58"/><stop offset=".5" stop-color="#fff0bd"/><stop offset="1" stop-color="#cfa652"/></linearGradient></defs><path d="M5 2h22a3 3 0 0 1 3 4v13L16 42 2 19V6a3 3 0 0 1 3-4Z" fill="url(#pointer-gold)" stroke="#fae6ac"/><circle cx="16" cy="13" r="4" fill="#786334"/></svg>
+          <div class="wheel-hub" aria-hidden="true"><svg class="icon"><use href="#i-gem"/></svg><span>TU BONO</span></div>
         </div>
-        <button type="button" class="back" data-action="back"><svg class="icon" aria-hidden="true"><use href="#i-back"/></svg>Volver</button>
+      </div>
+      <p class="wheel-status" id="status" role="status" aria-live="polite"><span class="status-dot" aria-hidden="true"></span><span id="status-text">Tu giro está listo</span></p>
+      <div id="spin-controls">
+        <button class="button" id="spin-button" type="button" disabled><svg class="icon spin-icon" aria-hidden="true"><use href="#i-spin"/></svg><span class="spin-loader" aria-hidden="true"></span><span id="spin-label">Girar la ruleta</span></button>
+        <p class="hint">Sin formularios. Solo un giro.</p>
+      </div>
+      <section class="result" id="result" aria-labelledby="result-title" hidden>
+        <div class="celebration" id="celebration" aria-hidden="true"></div>
+        <span class="result-tag"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Giro completado</span>
+        <h2 id="result-title" tabindex="-1">Tu bono de bienvenida</h2>
+        <p class="amount" aria-label="500 dólares estadounidenses"><small>US$</small>500</p>
+        <p class="result-copy">Descubre cómo activar tu bono<br>en el sitio del operador.</p>
+        <a class="button" id="affiliate-link" href="https://lkxj.cc/90f2bd" rel="sponsored nofollow">Reclamar mi bono<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <p class="result-terms">Bono promocional, no dinero en efectivo.<br>Activación sujeta a las condiciones del operador.</p>
       </section>
-
-      <!-- Экран 3: вопрос 2. -->
-      <section class="screen question" id="game" aria-labelledby="game-title" hidden>
-        <div class="question-icon" aria-hidden="true"><svg class="icon"><use href="#i-wheel"/></svg></div>
-        <span class="eyebrow">02 / Tu estilo de juego</span>
-        <h2 id="game-title" tabindex="-1">¿Qué tipo de juego prefieres?</h2>
-        <p class="description">Elige la opción que más te guste.</p>
-        <div class="options" role="group" aria-labelledby="game-title">
-          <button type="button" class="option" data-answer="game" data-value="Tragamonedas" aria-pressed="false"><svg class="icon option-icon" aria-hidden="true"><use href="#i-slots"/></svg><span class="option-text">Tragamonedas</span><svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"/></svg></button>
-          <button type="button" class="option" data-answer="game" data-value="Ruleta / Juegos de mesa" aria-pressed="false"><svg class="icon option-icon" aria-hidden="true"><use href="#i-wheel"/></svg><span class="option-text">Ruleta / Juegos de mesa</span><svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"/></svg></button>
-          <button type="button" class="option" data-answer="game" data-value="Apuestas deportivas" aria-pressed="false"><svg class="icon option-icon" aria-hidden="true"><use href="#i-ball"/></svg><span class="option-text">Apuestas deportivas</span><svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"/></svg></button>
-          <button type="button" class="option" data-answer="game" data-value="Aún no lo sé, quiero probar" aria-pressed="false"><svg class="icon option-icon" aria-hidden="true"><use href="#i-spark"/></svg><span class="option-text">Aún no lo sé, quiero probar</span><svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"/></svg></button>
-        </div>
-        <button type="button" class="back" data-action="back"><svg class="icon" aria-hidden="true"><use href="#i-back"/></svg>Volver</button>
-      </section>
-
-      <!-- Экран 4: вопрос 3. -->
-      <section class="screen question" id="deposit" aria-labelledby="deposit-title" hidden>
-        <div class="question-icon" aria-hidden="true"><svg class="icon"><use href="#i-wallet"/></svg></div>
-        <span class="eyebrow">03 / Tu forma de pagar</span>
-        <h2 id="deposit-title" tabindex="-1">¿Cómo prefieres depositar?</h2>
-        <p class="description">Una última pregunta y listo.</p>
-        <div class="options" role="group" aria-labelledby="deposit-title">
-          <button type="button" class="option" data-answer="deposit" data-value="Yape" aria-pressed="false"><span class="payment-icon yape" aria-hidden="true">Y</span><span class="option-text">Yape</span><svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"/></svg></button>
-          <button type="button" class="option" data-answer="deposit" data-value="Plin" aria-pressed="false"><span class="payment-icon plin" aria-hidden="true">p</span><span class="option-text">Plin</span><svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"/></svg></button>
-          <button type="button" class="option" data-answer="deposit" data-value="Tarjeta / Otro" aria-pressed="false"><svg class="icon option-icon" aria-hidden="true"><use href="#i-card"/></svg><span class="option-text">Tarjeta / Otro</span><svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"/></svg></button>
-        </div>
-        <button type="button" class="back" data-action="back"><svg class="icon" aria-hidden="true"><use href="#i-back"/></svg>Volver</button>
-      </section>
-
-      <!-- Экран 5: результат. -->
-      <section class="screen result centered" id="result" aria-labelledby="result-title" hidden>
-        <div class="result-emblem" aria-hidden="true"><svg class="icon"><use id="result-game-icon" href="#i-spark"/></svg><span class="result-complete"><svg class="icon"><use href="#i-check"/></svg></span></div>
-        <span class="eyebrow">3 de 3 · Completado</span>
-        <h2 id="result-title" tabindex="-1">¡Listo! Según tus respuestas, tu bono ideal es el <span>de bienvenida.</span></h2>
-        <p class="description">Reclámalo ahora y empieza a jugar.</p>
-        <div class="bonus-card">
-          <div class="bonus-card-top"><div><span class="eyebrow" id="result-style-label">Tu estilo · Por descubrir</span><p class="bonus-name">Bono de bienvenida</p></div><svg class="icon" aria-hidden="true"><use href="#i-gift"/></svg></div>
-          <p class="profile-note" id="result-profile-note"></p>
-          <div class="preferences"><p class="preferences-label">Tus preferencias</p><div class="preference-tags"><span class="preference-tag" id="game-summary"></span><span class="preference-tag" id="deposit-summary"></span></div></div>
-        </div>
-        <a class="cta" id="affiliate-link" href="#" rel="sponsored">Reclamar mi bono ahora<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        <p class="under-cta">Consulta los detalles de la promoción en el sitio del operador.</p>
-        <p class="setup-message" id="setup-message" role="status" hidden></p>
-        <button type="button" class="restart" data-action="restart">Volver a empezar</button>
-      </section>
+      <p class="mechanic">Giro promocional con resultado fijo de US$500.<br>No es un sorteo ni un premio en efectivo.</p>
+      <details class="conditions">
+        <summary>Cómo funciona y condiciones</summary>
+        <p>Esta ruleta presenta un bono de bienvenida de US$500. La animación dura 3 segundos y siempre termina en el mismo valor; las otras cifras son ilustrativas.</p>
+        <p>Girar no activa ni acredita un bono. Consulta en el sitio del operador los requisitos de elegibilidad, depósito, apuesta, vigencia y retiro antes de registrarte o depositar.</p>
+        <p>La disponibilidad del bono depende del operador. Este sitio contiene un enlace de afiliado.</p>
+      </details>
+      <noscript><p>Activa JavaScript para girar la ruleta. El bono está sujeto a las condiciones del operador.</p></noscript>
     </main>
-
-    <footer class="footer"><p><span class="age-badge">18+</span>Juega con responsabilidad.</p><p>Aplican términos y condiciones del operador.</p></footer>
+    <footer class="footer"><p><span class="age-badge">18+</span>Juega con responsabilidad.</p><p>El juego es entretenimiento, no una fuente de ingresos.</p></footer>
   </div>
-
+  <dialog class="age-dialog" id="age-dialog" aria-labelledby="age-title" aria-describedby="age-description">
+    <span class="age-symbol" aria-hidden="true">18+</span>
+    <h2 id="age-title">¿Eres mayor de 18 años?</h2>
+    <p id="age-description">Confirma tu edad para descubrir el bono de bienvenida.</p>
+    <button class="button" id="age-yes" type="button">Sí, soy mayor de edad</button>
+    <button class="secondary" id="age-no" type="button">No</button>
+    <p class="age-error" id="age-error" role="alert" hidden>Lo sentimos, debes ser mayor de edad.</p>
+  </dialog>
   <script>
+  (() => {
     'use strict';
-
-    // Партнерская ссылка для кнопки «Reclamar mi bono ahora».
     const AFFILIATE_URL = 'https://lkxj.cc/90f2bd';
+    const SPIN_DURATION_MS = 3000;
+    const SECTOR_COUNT = 8;
+    const WINNING_INDEX = 5;
+    const FULL_TURNS = 6;
+    const FINAL_ANGLE = FULL_TURNS * 360 + (360 - WINNING_INDEX * (360 / SECTOR_COUNT)) % 360;
+    const get = (id) => document.getElementById(id);
+    const wheel = get('wheel');
+    const spinButton = get('spin-button');
+    const spinLabel = get('spin-label');
+    const statusText = get('status-text');
+    const dialog = get('age-dialog');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let state = 'ready';
+    let ageConfirmed = false;
+    let spinAnimation;
+    let finishTimer;
+    get('affiliate-link').href = AFFILIATE_URL;
+    spinButton.disabled = false;
 
-    (() => {
-      const screenIds = ['welcome', 'age', 'game', 'deposit', 'result'];
-      const screens = screenIds.map(id => document.getElementById(id));
-      const stage = document.getElementById('stage');
-      const progressArea = document.getElementById('progress-area');
-      const progress = document.getElementById('progress');
-      const progressLabel = document.getElementById('progress-label');
-      const progressFill = document.getElementById('progress-fill');
-      const affiliateLink = document.getElementById('affiliate-link');
-      const setupMessage = document.getElementById('setup-message');
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const answers = { adult: false, game: '', deposit: '' };
-      // Визуальная персонализация: условия бонуса и доступные игры не выдумываются.
-      const resultProfiles = {
-        'Tragamonedas': { theme: 'slots', icon: '#i-slots', label: 'Tragamonedas', note: 'Elegiste explorar las tragamonedas.' },
-        'Ruleta / Juegos de mesa': { theme: 'table', icon: '#i-wheel', label: 'Ruleta y mesa', note: 'Tu preferencia: ruleta y juegos de mesa.' },
-        'Apuestas deportivas': { theme: 'sports', icon: '#i-ball', label: 'Deportes', note: 'Elegiste las apuestas deportivas.' },
-        'Aún no lo sé, quiero probar': { theme: 'explore', icon: '#i-spark', label: 'Por descubrir', note: 'Prefieres explorar antes de elegir.' }
-      };
-      let current = 0;
-      let transitioning = false;
-      let affiliateReady = false;
-
-      // Валидный URL открывается обычной ссылкой в текущей вкладке.
-      // При оставленном шаблоне предотвращаем переход на несуществующий адрес.
-      try {
-        const url = new URL(AFFILIATE_URL);
-        if (url.protocol === 'https:' || url.protocol === 'http:') {
-          affiliateLink.href = url.href;
-          affiliateReady = true;
-        }
-      } catch (_) { /* URL будет задан владельцем страницы. */ }
-
-      function showScreen(next) {
-        if (transitioning || next < 0 || next >= screens.length || next === current) return;
-        // Нельзя попасть к следующим вопросам или результату без предыдущих ответов.
-        if (next >= 2 && !answers.adult) return;
-        if (next >= 3 && !answers.game) return;
-        if (next === 4 && !answers.deposit) return;
-
-        transitioning = true;
-        stage.setAttribute('aria-busy', 'true');
-        stage.querySelectorAll('button').forEach(button => { button.disabled = true; });
-        affiliateLink.setAttribute('aria-disabled', 'true');
-        stage.classList.add('is-switching');
-        const duration = reducedMotion.matches ? 0 : 180;
-
-        window.setTimeout(() => {
-          screens[current].hidden = true;
-          current = next;
-          stage.dataset.screen = screenIds[current];
-          screens[current].hidden = false;
-          progressArea.hidden = current === 0 || current === 4;
-
-          if (current >= 1 && current <= 3) {
-            const label = `Paso ${current} de 3`;
-            progressLabel.textContent = label;
-            progress.setAttribute('aria-valuenow', String(current));
-            progress.setAttribute('aria-valuetext', label);
-            progressFill.style.width = `${current / 3 * 100}%`;
-          }
-
-          if (current === 4) {
-            // Предпочтения отражают выбор пользователя, а не условия оффера.
-            const profile = resultProfiles[answers.game] || resultProfiles['Aún no lo sé, quiero probar'];
-            screens[current].dataset.style = profile.theme;
-            document.getElementById('result-game-icon').setAttribute('href', profile.icon);
-            document.getElementById('result-style-label').textContent = `Tu estilo · ${profile.label}`;
-            document.getElementById('result-profile-note').textContent = profile.note;
-            document.getElementById('game-summary').textContent = answers.game;
-            document.getElementById('deposit-summary').textContent = answers.deposit;
-          }
-
-          // Фиксируем стартовое состояние для плавного появления нового экрана.
-          void screens[current].offsetHeight;
-          stage.classList.remove('is-switching');
-          window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-
-          window.setTimeout(() => {
-            transitioning = false;
-            stage.querySelectorAll('button').forEach(button => { button.disabled = false; });
-            affiliateLink.removeAttribute('aria-disabled');
-            stage.removeAttribute('aria-busy');
-            screens[current].querySelector('h1, h2').focus({ preventScroll: true });
-          }, duration);
-        }, duration);
+    function confetti() {
+      if (reducedMotion.matches) return;
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < 18; i += 1) {
+        const piece = document.createElement('span');
+        piece.className = 'confetti';
+        piece.style.left = (5 + (i * 37) % 90) + '%';
+        piece.style.animationDelay = ((i % 5) * .065) + 's';
+        piece.style.background = ['#edce82', '#c8dab5', '#fff1c0'][i % 3];
+        fragment.appendChild(piece);
       }
+      get('celebration').appendChild(fragment);
+      window.setTimeout(() => get('celebration').replaceChildren(), 2000);
+    }
 
-      function resetQuiz() {
-        answers.adult = false;
-        answers.game = '';
-        answers.deposit = '';
-        document.querySelectorAll('[data-answer]').forEach(button => button.setAttribute('aria-pressed', 'false'));
-        setupMessage.hidden = true;
-        showScreen(0);
+    function finishSpin() {
+      if (state !== 'spinning') return;
+      state = 'complete';
+      window.clearTimeout(finishTimer);
+      if (spinAnimation) spinAnimation.cancel();
+      wheel.style.transform = 'rotate(' + FINAL_ANGLE + 'deg)';
+      spinButton.classList.remove('is-spinning');
+      get('spin-controls').hidden = true;
+      get('wheel-scene').classList.add('is-won');
+      get('result').hidden = false;
+      statusText.textContent = 'Tu bono: US$500';
+      wheel.setAttribute('aria-label', 'Ruleta detenida en el bono promocional de 500 dólares');
+      const heading = get('result-title');
+      heading.focus({ preventScroll: true });
+      get('result').scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'nearest' });
+      confetti();
+    }
+
+    function startSpin() {
+      if (state !== 'ready' || !ageConfirmed) return;
+      state = 'spinning';
+      spinButton.disabled = true;
+      spinButton.classList.add('is-spinning');
+      spinLabel.textContent = 'Girando…';
+      statusText.textContent = 'Tu bienvenida está en camino…';
+      if (reducedMotion.matches) {
+        wheel.style.transform = 'rotate(' + FINAL_ANGLE + 'deg)';
+      } else if (typeof wheel.animate === 'function') {
+        spinAnimation = wheel.animate([
+          { transform: 'rotate(0deg)' },
+          { transform: 'rotate(' + FINAL_ANGLE + 'deg)' }
+        ], { duration: SPIN_DURATION_MS, easing: 'cubic-bezier(.12,.68,.12,1)', fill: 'forwards' });
+        spinAnimation.onfinish = finishSpin;
+      } else {
+        wheel.style.transition = 'transform ' + SPIN_DURATION_MS + 'ms cubic-bezier(.12,.68,.12,1)';
+        window.requestAnimationFrame(() => { wheel.style.transform = 'rotate(' + FINAL_ANGLE + 'deg)'; });
       }
+      finishTimer = window.setTimeout(finishSpin, SPIN_DURATION_MS);
+    }
 
-      stage.addEventListener('click', event => {
-        const button = event.target.closest('button');
-        if (!button || !stage.contains(button) || transitioning) return;
-
-        const action = button.dataset.action;
-        if (action === 'start' && current === 0) return showScreen(1);
-        if (action === 'back' && current >= 1 && current <= 3) return showScreen(current - 1);
-        if (action === 'restart' && current === 4) return resetQuiz();
-
-        const field = button.dataset.answer;
-        const expected = { 1: 'adult', 2: 'game', 3: 'deposit' }[current];
-        if (!field || field !== expected) return;
-
-        if (field === 'adult' && button.dataset.value === 'no') {
-          answers.adult = false;
-          answers.game = '';
-          answers.deposit = '';
-          document.querySelectorAll('[data-answer]').forEach(option => option.setAttribute('aria-pressed', 'false'));
-          window.alert('Lo sentimos, debes ser mayor de edad');
-          return;
-        }
-
-        answers[field] = field === 'adult' ? true : button.dataset.value;
-        screens[current].querySelectorAll('[data-answer]').forEach(option => {
-          option.setAttribute('aria-pressed', String(option === button));
-        });
-        showScreen(current + 1);
-      });
-
-      affiliateLink.addEventListener('click', event => {
-        if (transitioning || current !== 4 || !answers.adult || !answers.game || !answers.deposit) {
-          event.preventDefault();
-          return;
-        }
-        if (!affiliateReady) {
-          event.preventDefault();
-          setupMessage.textContent = 'La promoción aún no está disponible. Inténtalo más tarde.';
-          setupMessage.hidden = false;
-        }
-      });
-    })();
+    spinButton.addEventListener('click', () => {
+      if (state !== 'ready') return;
+      if (!ageConfirmed) {
+        get('age-error').hidden = true;
+        dialog.showModal();
+        return;
+      }
+      startSpin();
+    });
+    get('age-yes').addEventListener('click', () => {
+      ageConfirmed = true;
+      dialog.close();
+      startSpin();
+    });
+    get('age-no').addEventListener('click', () => {
+      get('age-error').hidden = false;
+    });
+    reducedMotion.addEventListener('change', (event) => {
+      if (event.matches && state === 'spinning' && spinAnimation) {
+        spinAnimation.cancel();
+        wheel.style.transform = 'rotate(' + FINAL_ANGLE + 'deg)';
+      }
+    });
+  })();
   </script>
 </body>
 </html>
